@@ -8,16 +8,12 @@ import cv2
 # CONFIG PAGE
 # =====================================
 st.set_page_config(
-    page_title="chilly quality detection",
+    page_title="Deteksi Cabai Rawit",
     layout="wide"
 )
 
-st.title("CAYENNE PEPPER QUALITY DETECTION🌶️")
-st.write("Chili quality detection based on physical condition")
-st.info(
-""" USAGE TIPS FOR MAXIMUM RESULT💡  
-USE WHITE BACKGROUND, DO NOT STACK CHILI, AND DO NOT EXCEED 3 """
-)
+st.title("🌶️ Aplikasi Deteksi Cabai Rawit")
+st.write("Deteksi tingkat kualitas cabai rawit menggunakan model YOLO TFLite")
 st.divider()
 
 # =====================================
@@ -49,11 +45,11 @@ output_details = interpreter.get_output_details()
 # =====================================
 # PILIH INPUT
 # =====================================
-st.subheader("Select Image Source")
+st.subheader("Pilih Sumber Gambar")
 
 option = st.radio(
-    "Choose Input",
-    ["Upload Image", "Use Camera"]
+    "Pilih metode input:",
+    ["Upload Gambar", "Gunakan Kamera"]
 )
 
 image = None
@@ -61,10 +57,10 @@ image = None
 # =====================================
 # UPLOAD IMAGE
 # =====================================
-if option == "Upload Image":
+if option == "Upload Gambar":
 
     uploaded_file = st.file_uploader(
-        "Upload chilli image",
+        "Upload gambar cabai",
         type=["jpg", "jpeg", "png"]
     )
 
@@ -74,10 +70,10 @@ if option == "Upload Image":
 # =====================================
 # CAMERA INPUT
 # =====================================
-elif option == "Use Camera":
+elif option == "Gunakan Kamera":
 
     camera_image = st.camera_input(
-        "Take chili foto"
+        "Ambil foto cabai"
     )
 
     if camera_image is not None:
@@ -88,7 +84,7 @@ elif option == "Use Camera":
 # =====================================
 if image is not None:
 
-    st.subheader("Real Image")
+    st.subheader("Gambar Asli")
     st.image(image, use_container_width=True)
 
     original_width = image.width
@@ -190,65 +186,64 @@ if image is not None:
 
     draw = ImageDraw.Draw(image)
 
-    # Font dinamis menyesuaikan ukuran gambar
-    font_size = max(32, image.width // 20)
-
+    # Font
     try:
-        font = ImageFont.truetype("arial.ttf", font_size)
+        font = ImageFont.truetype(
+            "arial.ttf",
+            20
+        )
     except:
         font = ImageFont.load_default()
 
-
+    # =====================================
+    # DRAW RESULT
+    # =====================================
     if len(indices) > 0:
 
         for i in indices.flatten():
 
             x, y, w, h = boxes[i]
 
-            label = class_names[class_ids[i]]
+            label = class_names[
+                class_ids[i]
+            ]
+
             conf = confidences[i]
 
-            # Bounding box objek
+            text = (
+                f"{label} "
+                f"{conf:.2f}"
+            )
+
+            # Bounding box
             draw.rectangle(
-                [(x, y), (x + w, y + h)],
+                [
+                    (x, y),
+                    (x + w, y + h)
+                ],
                 outline="red",
                 width=4
             )
 
-            # Text label
-            text = f"{label} {conf:.2f}"
-
-            # Hitung ukuran text
-            bbox_text = draw.textbbox((0, 0), text, font=font)
-            text_width = bbox_text[2] - bbox_text[0]
-            text_height = bbox_text[3] - bbox_text[1]
-
-            padding = 6
-            # Kalau label tidak muat di atas box, taruh di DALAM (bawah tepi atas)
-            if y - text_height - padding * 2 < 0:
-                label_y = y + padding  # taruh di dalam box
-            else:
-                label_y = y - text_height - padding * 2  # taruh di atas box
-            
             # Background text
             draw.rectangle(
                 [
-                    (x, label_y),
-                    (x + text_width + padding * 2, label_y + text_height + padding)
+                    (x, y - 30),
+                    (x + 180, y)
                 ],
                 fill="red"
             )
 
-            # Teks
+            # Text label
             draw.text(
-                (x + padding, label_y + padding // 2),
+                (x + 5, y - 28),
                 text,
                 fill="white",
                 font=font
             )
-            
+
     st.divider()
-    st.subheader("Prediction Image")
+    st.subheader("Hasil Deteksi")
     st.image(
         image,
         use_container_width=True
@@ -256,5 +251,5 @@ if image is not None:
 
 else:
     st.info(
-        "Upload from gallery or take foto with camera"
+        "Silakan upload gambar atau gunakan kamera."
     )
