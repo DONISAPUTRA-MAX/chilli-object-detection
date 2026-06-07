@@ -1,6 +1,6 @@
+streamlit
+numpy
+pillow
+opencv-python-headless
 ai-edge-litert==2.1.5
-numpy==2.4.6
-streamlit==1.57.0
-pillow==12.2.0
-gdown==6.0.0
-opencv-python
+gdown
