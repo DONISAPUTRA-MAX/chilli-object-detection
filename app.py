@@ -193,7 +193,7 @@ if image is not None:
     # Font
     try:
         font = ImageFont.truetype(
-            "arial.ttf",
+            "C:/Windows/Fonts/arialbd.ttf",
             20
         )
     except:
