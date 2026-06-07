@@ -89,7 +89,7 @@ elif option == "Use Camera":
 if image is not None:
 
     st.subheader("Real Image")
-    st.image(image, use_container_width=True)
+    st.image(image, width=min(image.width, 640))
 
     original_width = image.width
     original_height = image.height
@@ -268,7 +268,7 @@ if image is not None:
     st.subheader("Prediction Image")
     st.image(
         image,
-        use_container_width=True
+        width=min(image.width, 640)
     )
 
 else:
