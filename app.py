@@ -12,7 +12,7 @@ st.set_page_config(
     layout="wide"
 )
 
-st.title("CAYENNE PEPPEER QUALITY DETECTION🌶️")
+st.title("CAYENNE PEPPER QUALITY DETECTION🌶️")
 st.write("Chili quality detection based on physical condition")
 st.info(
 """ USAGE TIPS FOR MAXIMUM RESULT💡  
