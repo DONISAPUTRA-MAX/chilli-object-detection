@@ -14,6 +14,10 @@ st.set_page_config(
 
 st.title("CAYENNE PEPPEER QUALITY DETECTION🌶️")
 st.write("Chili quality detection based on physical condition")
+st.info(
+""" USAGE TIPS FOR MAXIMUM RESULT💡  
+USE WHITE BACKGROUND, DO NOT STACK CHILI, AND DO NOT EXCEED 3 """
+)
 st.divider()
 
 # =====================================
