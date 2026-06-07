@@ -191,7 +191,7 @@ if image is not None:
     draw = ImageDraw.Draw(image)
 
     # Font dinamis menyesuaikan ukuran gambar
-    font_size = max(20, image.width // 40)
+    font_size = max(32, image.width // 20)
 
     try:
         font = ImageFont.truetype("arial.ttf", font_size)
@@ -223,23 +223,30 @@ if image is not None:
             text_width = bbox_text[2] - bbox_text[0]
             text_height = bbox_text[3] - bbox_text[1]
 
+            padding = 6
+            # Kalau label tidak muat di atas box, taruh di DALAM (bawah tepi atas)
+            if y - text_height - padding * 2 < 0:
+                label_y = y + padding  # taruh di dalam box
+            else:
+                label_y = y - text_height - padding * 2  # taruh di atas box
+            
             # Background text
             draw.rectangle(
                 [
-                    (x, y - text_height - 10),
-                    (x + text_width + 10, y)
+                    (x, label_y),
+                    (x + text_width + padding * 2, label_y + text_height + padding)
                 ],
                 fill="red"
             )
 
-            # Tampilkan tulisan
+            # Teks
             draw.text(
-                (x + 5, y - text_height - 5),
+                (x + padding, label_y + padding // 2),
                 text,
                 fill="white",
                 font=font
             )
-
+            
     st.divider()
     st.subheader("Prediction Image")
     st.image(
