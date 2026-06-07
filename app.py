@@ -8,12 +8,12 @@ import cv2
 # CONFIG PAGE
 # =====================================
 st.set_page_config(
-    page_title="Deteksi Cabai Rawit",
+    page_title="chilly quality detection",
     layout="wide"
 )
 
-st.title("🌶️ Aplikasi Deteksi Cabai Rawit")
-st.write("Deteksi tingkat kualitas cabai rawit menggunakan model YOLO TFLite")
+st.title("CAYENNE PEPPEER QUALITY DETECTION🌶️")
+st.write("Chili quality detection based on physical condition")
 st.divider()
 
 # =====================================
@@ -45,11 +45,11 @@ output_details = interpreter.get_output_details()
 # =====================================
 # PILIH INPUT
 # =====================================
-st.subheader("Pilih Sumber Gambar")
+st.subheader("Select Image Source")
 
 option = st.radio(
-    "Pilih metode input:",
-    ["Upload Gambar", "Gunakan Kamera"]
+    "Choose Input",
+    ["Upload Image", "Use Camera"]
 )
 
 image = None
@@ -57,10 +57,10 @@ image = None
 # =====================================
 # UPLOAD IMAGE
 # =====================================
-if option == "Upload Gambar":
+if option == "Upload Image":
 
     uploaded_file = st.file_uploader(
-        "Upload gambar cabai",
+        "Upload chilli image",
         type=["jpg", "jpeg", "png"]
     )
 
@@ -70,10 +70,10 @@ if option == "Upload Gambar":
 # =====================================
 # CAMERA INPUT
 # =====================================
-elif option == "Gunakan Kamera":
+elif option == "Use Camera":
 
     camera_image = st.camera_input(
-        "Ambil foto cabai"
+        "Take chili foto"
     )
 
     if camera_image is not None:
@@ -84,7 +84,7 @@ elif option == "Gunakan Kamera":
 # =====================================
 if image is not None:
 
-    st.subheader("Gambar Asli")
+    st.subheader("Real Image")
     st.image(image, use_container_width=True)
 
     original_width = image.width
@@ -243,7 +243,7 @@ if image is not None:
             )
 
     st.divider()
-    st.subheader("Hasil Deteksi")
+    st.subheader("Prediction Image")
     st.image(
         image,
         use_container_width=True
@@ -251,5 +251,5 @@ if image is not None:
 
 else:
     st.info(
-        "Silakan upload gambar atau gunakan kamera."
+        "Upload from gallery or take foto with camera"
     )
