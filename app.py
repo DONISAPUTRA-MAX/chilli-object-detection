@@ -190,58 +190,51 @@ if image is not None:
 
     draw = ImageDraw.Draw(image)
 
+    # Font dinamis menyesuaikan ukuran gambar
     font_size = max(20, image.width // 40)
-    # Font
+
     try:
-        font = ImageFont.truetype(
-            "arial.ttf",
-            font_size
-        )
+        font = ImageFont.truetype("arial.ttf", font_size)
     except:
         font = ImageFont.load_default()
 
-    # =====================================
-    # DRAW RESULT
-    # =====================================
+
     if len(indices) > 0:
 
         for i in indices.flatten():
 
             x, y, w, h = boxes[i]
 
-            label = class_names[
-                class_ids[i]
-            ]
-
+            label = class_names[class_ids[i]]
             conf = confidences[i]
-
-            text = (
-                f"{label} "
-                f"{conf:.2f}"
-            )
 
             # Bounding box objek
             draw.rectangle(
-                [
-                    (x, y),
-                    (x + w, y + h)
-                ],
+                [(x, y), (x + w, y + h)],
                 outline="red",
                 width=4
             )
 
+            # Text label
+            text = f"{label} {conf:.2f}"
+
+            # Hitung ukuran text
+            bbox_text = draw.textbbox((0, 0), text, font=font)
+            text_width = bbox_text[2] - bbox_text[0]
+            text_height = bbox_text[3] - bbox_text[1]
+
             # Background text
             draw.rectangle(
                 [
-                    (x, y - 30),
-                    (x + 180, y)
+                    (x, y - text_height - 10),
+                    (x + text_width + 10, y)
                 ],
                 fill="red"
             )
 
-            # Text label
+            # Tampilkan tulisan
             draw.text(
-                (x + 5, y - 28),
+                (x + 5, y - text_height - 5),
                 text,
                 fill="white",
                 font=font
