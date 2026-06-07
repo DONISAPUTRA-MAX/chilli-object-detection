@@ -3,4 +3,3 @@ numpy
 pillow
 opencv-python-headless
 ai-edge-litert==2.1.5
-gdown

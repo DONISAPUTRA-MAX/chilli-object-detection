@@ -190,11 +190,12 @@ if image is not None:
 
     draw = ImageDraw.Draw(image)
 
+    font_size = max(20, image.width // 40)
     # Font
     try:
         font = ImageFont.truetype(
             "arial.ttf",
-            20
+            font_size
         )
     except:
         font = ImageFont.load_default()
@@ -219,7 +220,7 @@ if image is not None:
                 f"{conf:.2f}"
             )
 
-            # Bounding box
+            # Bounding box objek
             draw.rectangle(
                 [
                     (x, y),
