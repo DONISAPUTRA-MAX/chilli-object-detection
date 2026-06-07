@@ -189,12 +189,14 @@ if image is not None:
     )
 
     draw = ImageDraw.Draw(image)
+    
+    font_size = max(10, image.width // 30)
 
     # Font
     try:
         font = ImageFont.truetype(
-            "C:/Windows/Fonts/arialbd.ttf",
-            20
+            "arialbd.ttf",
+            font_size
         )
     except:
         font = ImageFont.load_default()
@@ -208,39 +210,55 @@ if image is not None:
 
             x, y, w, h = boxes[i]
 
-            label = class_names[
-                class_ids[i]
-            ]
-
+            label = class_names[class_ids[i]]
             conf = confidences[i]
+            text = f"{label} {conf:.2f}"
 
-            text = (
-                f"{label} "
-                f"{conf:.2f}"
-            )
+            # Hitung ukuran text dulu
+            bbox_text = draw.textbbox((0, 0), text, font=font)
+            text_w = bbox_text[2] - bbox_text[0]
+            text_h = bbox_text[3] - bbox_text[1]
+            padding = 8
 
-            # Bounding box
+            # Posisi label (atas atau dalam box jika y terlalu kecil)
+            if y - text_h - padding * 2 < 0:
+                label_y = y + padding
+            else:
+                label_y = y - text_h - padding * 2
+
+            # Bounding box — outline hitam tebal biar kontras di foto putih
             draw.rectangle(
-                [
-                    (x, y),
-                    (x + w, y + h)
-                ],
+                [(x, y), (x + w, y + h)],
+                outline="black",
+                width=5
+            )
+            draw.rectangle(
+                [(x, y), (x + w, y + h)],
                 outline="red",
-                width=4
+                width=3
             )
 
-            # Background text
+            # Border luar label (hitam)
             draw.rectangle(
                 [
-                    (x, y - 30),
-                    (x + 180, y)
+                    (x - 2, label_y - 2),
+                    (x + text_w + padding * 2 + 2, label_y + text_h + padding + 2)
+                ],
+                fill="black"
+            )
+
+            # Background label (merah)
+            draw.rectangle(
+                [
+                    (x, label_y),
+                    (x + text_w + padding * 2, label_y + text_h + padding)
                 ],
                 fill="red"
             )
 
-            # Text label
+            # Teks putih
             draw.text(
-                (x + 5, y - 28),
+                (x + padding, label_y + padding // 2),
                 text,
                 fill="white",
                 font=font
